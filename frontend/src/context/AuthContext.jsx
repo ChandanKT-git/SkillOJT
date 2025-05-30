@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios'; // Import axios
+import api from '../config/axios'; // Use configured axios instance
 
 const AuthContext = createContext();
 
@@ -21,10 +21,10 @@ export const AuthProvider = ({ children }) => {
   const loadUser = async () => {
     const token = localStorage.getItem('token');
     if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      // Token is automatically added by axios interceptor
       try {
         console.log('loadUser: Fetching user data from /api/users/me');
-        const res = await axios.get('/api/users/me');
+        const res = await api.get('/users/me');
         console.log('loadUser: Received user data', res.data.data);
         setUser(res.data.data); // Assuming user data is in res.data.data
       } catch (err) {
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
   const signOut = () => {
     console.log('signOut: Signing out user');
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common['Authorization'];
+    // Token is automatically removed by axios interceptor
     setUser(null);
     setError(null);
     console.log('signOut: User signed out');

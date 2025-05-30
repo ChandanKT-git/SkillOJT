@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, Star, Users, Clock, Award, User } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import axios from 'axios';
+import api from '../config/axios'; // Use configured axios instance
 import SessionBooking from '../components/sessions/SessionBooking';
 import SkillCard from '../components/skills/SkillCard';
 
@@ -75,7 +75,7 @@ const SkillsPage = () => {
 
   const fetchSkills = async () => {
     try {
-      const response = await axios.get('/api/skills');
+      const response = await api.get('/skills');
       console.log('Skills API response data:', response.data);
       // If backend returns an empty array, use dummy data as fallback
       if (response.data.data && response.data.data.length > 0) {

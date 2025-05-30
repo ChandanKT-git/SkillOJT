@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import api from '../../config/axios'; // Use configured axios instance
 import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
@@ -20,7 +20,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await axios.post('/api/users/login', values);
+      const response = await api.post('/users/login', values);
       
       await handleAuthSuccess(response.data.token);
       
